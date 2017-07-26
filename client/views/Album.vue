@@ -11,7 +11,7 @@
       </div>
     </div>
     <ol class="rightpane list">
-      <li v-for="track in album.tracks.items">
+      <li v-for="track in album.tracks.items" >
         <div class="title">{{track.name}}</div>
         <div class="time">
           {{ track.duration_ms | tracktime }}

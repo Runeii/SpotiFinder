@@ -9,7 +9,7 @@
     <ul class="rightpane discography">
       <a v-for="album in albums" v-bind:href="'/album/' + album.id">
         <li class="disc">
-          <img :src="album.images[0].url" />
+          <ProgressiveImage :small="album.images[2].url" :src="album.images[0].url"></ProgressiveImage>
           <div class="details">
             <p>{{album.name}}</p>
           </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import ProgressiveImage from 'components/ProgressiveImage'
 export default {
   data: function() {
     return {
@@ -33,7 +34,7 @@ export default {
     }
   },
   components: {
-
+    ProgressiveImage
   },
   mounted() {
     this.axios.get('artists/' + this.$route.params.artistId, {
