@@ -7,4 +7,37 @@
   <body>
     <div id="app"></div>
   </body>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  .page {
+    width:100vw;
+    height:100vh;
+  }
+  .page::after {
+    content: 'Connecting to Spotify...';
+    position: fixed;
+    top:50%;
+    left:50;
+    opacity:1;
+    transition:opacity 0.5s;
+    z-index:1;
+  }
+  .page.connected::after {
+    opacity:0;
+  }
+  h2 {
+    font-size:1rem;
+  }
+  h3 {
+    font-size:2.25rem;
+  }
+  h4, .h4 {
+    font-size:1.5rem;
+  }
+  h5 {
+    font-size:1rem;
+  }
+  </style>
 </html>

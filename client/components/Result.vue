@@ -1,11 +1,12 @@
 <template>
-  <a v-bind:href="'/artist/' + artist.id" >
-    <article class="artist-card">
-      <h3>{{artist.name}}</h3>
-      <ul v-for="genre in artist.genres">
-        <li>{{genre}}</li>
+  <a v-bind:href="'/artist/' + artist.id" class="artist-card">
+    <li>
+      <h3 class="h4">{{artist.name}}</h3>
+      <span class="plus"></span>
+      <ul>
+        <li v-for="genre in artist.genres">{{genre}}</li>
       </ul>
-    </article>
+    </li>
   </a>
 </template>
 
@@ -18,4 +19,7 @@ export default {
 </script>
 
 <style>
+  .artist-card ul {
+    display: none;
+  }
 </style>

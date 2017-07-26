@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="homepage">
     <search v-bind:artists="this.$store.state.artists" v-if="this.$store.state.token != false"></search>
     <login v-else=""></login>
   </div>

@@ -3,11 +3,11 @@
     <router-view></router-view>
   </div>
 </template>
-
 <style>
 body {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1rem;
+  line-height:1.5;
   font-family: -apple-system, BlinkMacSystemFont,
                'avenir next', avenir,
                helvetica, 'helvetica neue',
@@ -17,7 +17,6 @@ body {
 }
 .page {
   text-align: center;
-  /* nesting for the need to test postcss */
   code {
     background-color: #f0f0f0;
     padding: 3px 5px;

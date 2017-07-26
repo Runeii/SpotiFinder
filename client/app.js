@@ -14,10 +14,24 @@ const app = new Vue({
   ...App,
   mounted(){
     this.$store.commit('setToken');
-    this.$store.commit('getToken');
+    var self = this;
+    setTimeout(function(){
+      if(self.$store.commit('getToken') != false) {
+        self.$store.state.bodyClasses += ' connected';
+      }
+    }, 50);
   }
 })
 
 Vue.use(VueAxios, axios)
+
+Vue.filter('tracktime', function (value) {
+  var minutes = new Date(value).getUTCMinutes();
+  var seconds = new Date(value).getUTCSeconds();
+  if(seconds < 10) {
+    seconds = seconds + '0';
+  }
+  return minutes + ':' + seconds;
+})
 
 export { app, router, store }

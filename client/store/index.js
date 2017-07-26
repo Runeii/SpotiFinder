@@ -10,13 +10,11 @@ Vue.use(Vuex)
 const state = {
   token: Vue.ls.get("spotify_auth_token"),
   token_expiry: Vue.ls.get("spotify_auth_token_time"),
-  artists: [{
-    'images': [{
-      url: ''
-    }]
-  }],
+  artists: [],
   albums: [],
-  query: ''
+  query: '',
+  currentId: '',
+  bodyClasses: 'page'
 }
 
 const mutations = {
@@ -43,17 +41,6 @@ const mutations = {
   }
 }
 const actions = {
-  getArtistDiscography(){
-    this.axios.get('artists/' + this.$route.params.artistId + '/albums', {
-      timeout: 1000,
-      baseURL: 'https://api.spotify.com/v1/',
-      headers: {
-        Authorization: 'Bearer ' + this.$store.state.token
-      }
-    }).then((response) => {
-      this.$data.albums = response.data.items;
-    });
-  }
 }
 const store = new Vuex.Store({
   state,
