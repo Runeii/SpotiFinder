@@ -3,6 +3,7 @@
     <div class="leftpane album">
       <img :src="album.images[0].url" />
       <div class="info">
+        <AudioPlayer :track="this.queue"></AudioPlayer>
         <h1>{{album.name}}</h1>
         <ul>
           <li>{{ new Date(album.release_date).getUTCFullYear()}}</li>
@@ -11,7 +12,7 @@
       </div>
     </div>
     <ol class="rightpane list">
-      <li v-for="track in album.tracks.items" >
+      <li v-for="track in album.tracks.items" v-on:click="playTrack(track.preview_url)" :track="track.preview_url">
         <div class="title">{{track.name}}</div>
         <div class="time">
           {{ track.duration_ms | tracktime }}
@@ -23,15 +24,22 @@
 </template>
 
 <script>
+import AudioPlayer from 'components/AudioPlayer';
 export default {
   data: function() {
     return {
       album: {},
-      length: 0
+      length: 0,
+      queue: ''
     }
   },
   components: {
-
+    AudioPlayer
+  },
+  methods: {
+    playTrack: function(track) {
+      this.queue = track;
+    }
   },
   mounted() {
     this.axios.get('albums/' + this.$route.params.albumId, {
@@ -47,8 +55,6 @@ export default {
         temp += e.duration_ms;
       });
       this.$data.length = temp;
-
-
     });
   }
 }

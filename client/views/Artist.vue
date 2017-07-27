@@ -1,7 +1,10 @@
 <template>
   <div v-bind:class="this.$store.state.bodyClasses">
+    <div class="loading" v-if="loading">
+      Loading...
+    </div>
     <div class="leftpane artist">
-      <img :src="artist.images[0].url" />
+      <ProgressiveImage :src="artist.images[0].url" :small="artist.images[2].url"></ProgressiveImage>
       <div class="info">
         <h1>{{artist.name}}</h1>
       </div>
@@ -25,41 +28,54 @@ import ProgressiveImage from 'components/ProgressiveImage'
 export default {
   data: function() {
     return {
-      artist: {
-        images: [
-          {url: ''}
-        ]
-      },
-      albums: {}
+      artist: this.fetchArtist(),
+      albums: {},
+      loading: true
     }
   },
   components: {
     ProgressiveImage
   },
+  methods: {
+    fetchArtist(){
+      this.axios.get('artists/' + this.$route.params.artistId, {
+        timeout: 1000,
+        baseURL: 'https://api.spotify.com/v1/',
+        headers: {
+          Authorization: 'Bearer ' + this.$store.state.token
+        }
+      }).then((response) => {
+        this.artist = response.data;
+        this.loading = false;
+        this.$store.state.bodyClasses += ' artistloaded';
+      });
+    },
+    fetchDiscography(){
+      this.axios.get('artists/' + this.$route.params.artistId + '/albums', {
+        timeout: 1000,
+        baseURL: 'https://api.spotify.com/v1/',
+        headers: {
+          Authorization: 'Bearer ' + this.$store.state.token
+        }
+      }).then((response) => {
+        this.albums = response.data.items;
+        this.$store.state.bodyClasses += ' albumsloaded';
+      });
+    }
+  },
   mounted() {
-    this.axios.get('artists/' + this.$route.params.artistId, {
-      timeout: 1000,
-      baseURL: 'https://api.spotify.com/v1/',
-      headers: {
-        Authorization: 'Bearer ' + this.$store.state.token
-      }
-    }).then((response) => {
-      this.$data.artist = response.data;
-    });
-    this.axios.get('artists/' + this.$route.params.artistId + '/albums', {
-      timeout: 1000,
-      baseURL: 'https://api.spotify.com/v1/',
-      headers: {
-        Authorization: 'Bearer ' + this.$store.state.token
-      }
-    }).then((response) => {
-      this.$data.albums = response.data.items;
-    });
+    this.fetchDiscography()
   }
 }
 </script>
 
 <style>
+  .connected > .artist, .connected > .discography {
+    height:0%;
+  }
+  .artistloaded > .artist, .albumsloaded > .discography {
+    height: 100%;
+  }
   .discography > a {
     width:50%;
     padding:1.5rem;
