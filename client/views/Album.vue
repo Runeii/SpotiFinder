@@ -3,11 +3,11 @@
     <div class="leftpane album">
       <img :src="album.images[0].url" />
       <div class="info">
-        <AudioPlayer :track="this.queue"></AudioPlayer>
+        <AudioPlayer></AudioPlayer>
         <h1>{{album.name}}</h1>
         <ul>
           <li>{{ new Date(album.release_date).getUTCFullYear()}}</li>
-          <li>{{ length | tracktime }}</li>
+          <li>{{ totallength | tracktime }}</li>
         </ul>
       </div>
     </div>
@@ -25,37 +25,37 @@
 
 <script>
 import AudioPlayer from 'components/AudioPlayer';
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  data: function() {
-    return {
-      album: {},
-      length: 0,
-      queue: ''
-    }
+  computed: {
+    album() {
+      return this.ALBUMDETAILS(this.$route.params.albumId)
+    },
+    totallength() {
+      var temp = 0;
+      this.album.tracks.items.forEach(function(e){
+        temp += e.duration_ms;
+      });
+      return temp;
+    },
+    ...mapGetters(['ALBUMDETAILS'])
   },
   components: {
     AudioPlayer
   },
-  methods: {
-    playTrack: function(track) {
-      this.queue = track;
+  mutations: {
+    QUEUE(state, track){
+        this.queue = track;
     }
   },
+  methods: {
+    playTrack: function(track) {
+      this.$store.dispatch('PLAYSONG',track);
+    },
+    ...mapActions(['PULL_ALBUMDETAILS'])
+  },
   mounted() {
-    this.axios.get('albums/' + this.$route.params.albumId, {
-      timeout: 1000,
-      baseURL: 'https://api.spotify.com/v1/',
-      headers: {
-        Authorization: 'Bearer ' + this.$store.state.token
-      }
-    }).then((response) => {
-      this.$data.album = response.data;
-      var temp = 0;
-      this.$data.album.tracks.items.forEach(function(e){
-        temp += e.duration_ms;
-      });
-      this.$data.length = temp;
-    });
+    this.PULL_ALBUMDETAILS(this.$route.params.albumId);
   }
 }
 </script>

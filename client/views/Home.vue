@@ -1,18 +1,19 @@
 <template>
   <div class="homepage">
-    <search v-bind:artists="this.$store.state.artists" v-if="this.$store.state.token != false"></search>
-    <login v-else=""></login>
+    <search v-if="TOKEN != false"></search>
   </div>
 </template>
 
 <script>
 import Search from 'components/Search'
-import Login from 'components/login'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    Search,
-    Login
+    Search
+  },
+  computed: {
+    ...mapGetters(['TOKEN'])
   }
 }
 </script>

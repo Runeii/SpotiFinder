@@ -1,8 +1,5 @@
 <template>
   <div v-bind:class="this.$store.state.bodyClasses">
-    <div class="loading" v-if="loading">
-      Loading...
-    </div>
     <div class="leftpane artist">
       <ProgressiveImage :src="artist.images[0].url" :small="artist.images[2].url"></ProgressiveImage>
       <div class="info">
@@ -25,46 +22,26 @@
 
 <script>
 import ProgressiveImage from 'components/ProgressiveImage'
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  data: function() {
-    return {
-      artist: this.fetchArtist(),
-      albums: {},
-      loading: true
-    }
+  computed:{
+    artist() {
+      return this.ARTISTDETAILS(this.$route.params.artistId)
+    },
+    albums() {
+      return this.DISCOGRAPHY(this.$route.params.artistId)
+    },
+    ...mapGetters(['ARTISTDETAILS', 'DISCOGRAPHY'])
   },
   components: {
     ProgressiveImage
   },
   methods: {
-    fetchArtist(){
-      this.axios.get('artists/' + this.$route.params.artistId, {
-        timeout: 1000,
-        baseURL: 'https://api.spotify.com/v1/',
-        headers: {
-          Authorization: 'Bearer ' + this.$store.state.token
-        }
-      }).then((response) => {
-        this.artist = response.data;
-        this.loading = false;
-        this.$store.state.bodyClasses += ' artistloaded';
-      });
-    },
-    fetchDiscography(){
-      this.axios.get('artists/' + this.$route.params.artistId + '/albums', {
-        timeout: 1000,
-        baseURL: 'https://api.spotify.com/v1/',
-        headers: {
-          Authorization: 'Bearer ' + this.$store.state.token
-        }
-      }).then((response) => {
-        this.albums = response.data.items;
-        this.$store.state.bodyClasses += ' albumsloaded';
-      });
-    }
+    ...mapActions(['PULL_DISCOGRAPHY', 'PULL_ARTISTDETAILS'])
   },
   mounted() {
-    this.fetchDiscography()
+    this.PULL_ARTISTDETAILS(this.$route.params.artistId);
+    this.PULL_DISCOGRAPHY(this.$route.params.artistId);
   }
 }
 </script>

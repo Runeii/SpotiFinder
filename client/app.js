@@ -5,6 +5,7 @@ import { sync } from 'vuex-router-sync'
 import App from './components/App'
 import router from './router'
 import store from './store'
+import { mapGetters, mapActions } from 'vuex'
 
 sync(store, router)
 
@@ -13,13 +14,10 @@ const app = new Vue({
   store,
   ...App,
   mounted(){
-    this.$store.commit('setToken');
-    var self = this;
-    setTimeout(function(){
-      if(self.$store.commit('getToken') != false) {
-        self.$store.state.bodyClasses += ' connected';
-      }
-    }, 50);
+    store.dispatch('SETTOKEN');
+    if(store.state.TOKEN != false) {
+      store.dispatch('BODYCLASSES', 'connected');
+    }
   }
 })
 
