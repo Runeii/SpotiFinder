@@ -1,6 +1,6 @@
 <template>
   <div class="homepage">
-    <search v-if="TOKEN != false"></search>
+    <search></search>
   </div>
 </template>
 
@@ -11,9 +11,6 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     Search
-  },
-  computed: {
-    ...mapGetters(['TOKEN'])
   }
 }
 </script>

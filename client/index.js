@@ -1,5 +1,4 @@
 import './promise-polyfill'
-import './spotify-connector'
 import { app } from './app'
 
 // Enable progressive web app support (with offline-plugin)

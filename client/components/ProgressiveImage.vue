@@ -5,7 +5,6 @@
 <script>
 export default {
   data: function () {
-    console.log('Small image loading: ' + this.small);
     return {
       imageSrc: this.small
     }
@@ -20,7 +19,6 @@ export default {
     that = this
     img.onload = function(){
       that.imageSrc = that.src
-      console.log('Large image loading: ' + that.src);
     }
     img.src = this.src
   }
