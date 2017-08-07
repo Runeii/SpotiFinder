@@ -1,6 +1,6 @@
 <template>
   <div v-bind:class="this.$store.state.bodyClasses">
-    <div class="leftpane artist">
+    <div class="leftpane artist" v-if="artist">
       <ProgressiveImage :src="artist.images[0].url" :small="artist.images[2].url"></ProgressiveImage>
       <div class="info">
         <h1>{{artist.name}}</h1>

@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="this.$store.state.bodyClasses">
+  <div v-bind:class="this.$store.state.bodyClasses" v-if="album">
     <div class="leftpane album">
       <img :src="album.images[0].url" />
       <div class="info">
